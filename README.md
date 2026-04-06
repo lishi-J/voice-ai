@@ -21,29 +21,25 @@
 - **日志与调试**：配置多输出日志（终端+文件），按日期轮转，便于线上问题追踪。
 
 ```
-finance_manager/
-│
-├── main.py                           # 应用入口
-├── requirements.txt                  # 依赖清单（conda 环境可参考）
-│
-├── database/                         # 数据库模块
-│   ├── __init__.py                   # 包初始化，暴露 DatabaseManager 等
-│   ├── db_manager.py                 # 数据库管理类（含日表、月表操作，自动更新汇总）
-│   └── models.py                     # 数据模型类（可选，用于类型提示）
-│
-├── modules/                          # 业务逻辑模块
-│   ├── __init__.py                   # 包初始化
-│   ├── report_generator.py           # 报表生成（基于月表生成图表、分析文本）
-│   ├── email_sender.py               # 邮件发送（SMTP）
-│   ├── config.py                     # 配置管理（JSON 文件）
-│   └── scheduler.py                  # 自动发送检查（启动时执行）
-├── static/                           # 静态文件
-├── ui/                               # UI 模块
-│   ├── __init__.py                   # 包初始化
-│   ├── main_view.py                  # 主界面（三 Tab：日表编辑、月表查看、报表展示）
-│   └── settings_dialog.py            # 设置对话框（邮件配置）
-│
-└── data/                             # 运行时数据（自动创建）
-      ├── finance.db                    # SQLite 数据库（含 transactions 和 daily_summary 表）
-      └── config.json                   # 配置文件（SMTP 信息等）
+voice_ai/
+├── main.py                 # 程序入口：初始化模块、启动事件循环
+├── config.py               # 统一配置（模型路径、API密钥、队列大小等）
+├── requirements.txt        # 依赖库
+├── .env.example            # 环境变量示例（可选）
+├── modules/                # 核心功能模块
+│   ├── __init__.py
+│   ├── audio_input.py      # 麦克风采集 + VAD + 中断检测
+│   ├── asr.py              # 语音识别（流式）
+│   ├── dialogue_manager.py # 对话管理 + 工具调用调度
+│   ├── llm.py              # 大语言模型调用（支持流式）
+│   ├── tts.py              # 语音合成（流式）
+│   ├── audio_output.py     # 音频播放 + 中断响应
+│   └── tools/              # 扩展工具集（按需添加）
+│       ├── __init__.py
+│       ├── system_control.py  # 系统命令、进程管理等
+│       └── screen_reader.py   # 屏幕截图、OCR
+├── utils/                  # 辅助工具
+│   ├── audio_utils.py      # 音频格式转换、重采样
+│   └── queue_utils.py      # 队列封装（监控、中断信号）
+└── logs/                   # 日志目录（自动生成）
 ```
